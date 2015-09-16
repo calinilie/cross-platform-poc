@@ -25,7 +25,7 @@ public class MessagesIntegrationTest {
 		
 		actions.GetAllMessages();
 		
-		Thread.sleep(1500);
+		Thread.sleep(1300);
 		
 		//Assert.assertSame(4, underTest.getAllMessages().getMessages().size());
 		//Assert.assertSame(1l, underTest.getAllMessages().getMessages().get(0).getId());
