@@ -1,34 +1,57 @@
 package org.shiftedapps.helloworld.bll;
 
+import java.util.List;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.shiftedapps.helloworld.bll.models.Message;
 import org.shiftedapps.helloworld.bll.models.MessageList;
 import org.shiftedapps.helloworld.messages.IMessageListReceivedListener;
+import org.shiftedapps.helloworld.messages.IMessageReceivedListener;
 import org.shiftedapps.helloworld.messages.MessageActions;
 
-import dagger.ObjectGraph;
+public class MessagesIntegrationTest extends IntegrationTestsBase {
 
-public class MessagesIntegrationTest {
-	
+	private MessageActions actions;
+
+	@Before
+	public void setup() {
+		super.setup();
+		actions = objectGraph.get(MessageActions.class);
+	}
+
 	@Test
-	public void getMesssagesSize() throws InterruptedException{
-		ObjectGraph objectGraph = ObjectGraph.create(new TestModule());
-		MessageActions actions = objectGraph.get(MessageActions.class);
-		Dispatcher dispatcher = objectGraph.get(Dispatcher.class);
-		dispatcher.registerMessageListReceivedListener(new IMessageListReceivedListener() {
-			
+	public void getMesssagesSize() throws InterruptedException {
+		super.dispatcher.registerMessageListReceivedListener(new IMessageListReceivedListener() {
+
 			public void onMessagesReceived(MessageList messageList) {
-				System.out.println(">>>>>>>>>>>>>>>>>>>" + messageList.getMessages().size());
-				Assert.assertEquals(4, messageList.getMessages().size());	
+				List<Message> messages = messageList.getMessages();
+				for (Message m : messages) {
+					Assert.assertTrue(m.getId() != 0);
+					Assert.assertTrue(m.getMessage()!= null && !m.getMessage().isEmpty());
+				}
+				Assert.assertEquals(4, messages.size());
+				done();
 			}
 		});
-		
 		actions.GetAllMessages();
-		
-		Thread.sleep(1300);
-		
-		//Assert.assertSame(4, underTest.getAllMessages().getMessages().size());
-		//Assert.assertSame(1l, underTest.getAllMessages().getMessages().get(0).getId());
+		waitForTest();
+	}
 
+	@Test
+	public void getMessage() throws InterruptedException {
+		super.dispatcher.registerMessageReceivedListener(new IMessageReceivedListener() {
+			
+			public void onMessageReceived(Message m) {
+				Assert.assertEquals(1, m.getId());
+				Assert.assertTrue(m.getMessage() != null && !m.getMessage().isEmpty());
+				Assert.assertTrue(m.getAuthor() != null && !m.getAuthor().isEmpty());
+				Assert.assertTrue(m.getReceivedTimestamp() != null && !m.getReceivedTimestamp().isEmpty());
+				done();
+			}
+		});
+		actions.GetMessage(1);
+		waitForTest();
 	}
 }
