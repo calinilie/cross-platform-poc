@@ -9,10 +9,7 @@ import org.shiftedapps.helloworld.messages.MessageActions;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(
-	library = true,
-	injects = {Dispatcher.class, MessageActions.class}
-)
+@Module
 public class TestModule {
 
 	@Provides IJsonSerializer provideJsonSerializer(){
