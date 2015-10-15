@@ -18,7 +18,7 @@ public class MessagesIntegrationTest extends IntegrationTestsBase {
 	@Before
 	public void setup() {
 		super.setup();
-		actions = objectGraph.get(MessageActions.class);
+		actions = comp.messageActions();
 	}
 
 	@Test
@@ -29,7 +29,7 @@ public class MessagesIntegrationTest extends IntegrationTestsBase {
 				List<Message> messages = messageList.getMessages();
 				for (Message m : messages) {
 					Assert.assertTrue(m.getId() != 0);
-					Assert.assertTrue(m.getMessage()!= null && !m.getMessage().isEmpty());
+					Assert.assertTrue(m.getMessage() != null && !m.getMessage().isEmpty());
 				}
 				Assert.assertEquals(4, messages.size());
 				done();
@@ -42,7 +42,7 @@ public class MessagesIntegrationTest extends IntegrationTestsBase {
 	@Test
 	public void getMessage() throws InterruptedException {
 		super.dispatcher.registerMessageReceivedListener(new IMessageReceivedListener() {
-			
+
 			public void onMessageReceived(Message m) {
 				Assert.assertEquals(1, m.getId());
 				Assert.assertTrue(m.getMessage() != null && !m.getMessage().isEmpty());
