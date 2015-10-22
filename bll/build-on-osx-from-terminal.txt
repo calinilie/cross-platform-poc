@@ -1,4 +1,5 @@
 find src -type f -name "*.java" > sources.txt
+
 find target/test-classes -type f -name "*.java" > generated-sources.txt
 
 
