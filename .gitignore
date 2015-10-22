@@ -47,3 +47,7 @@ atlassian-ide-plugin.xml
 RemoteSystemsTempFiles
 .classpath
 .project
+
+bll/compiled/*
+generated-sources.txt
+sources.txt
