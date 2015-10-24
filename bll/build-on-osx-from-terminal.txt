@@ -4,3 +4,32 @@ find target/test-classes -type f -name "*.java" > generated-sources.txt
 
 
 javac @sources.txt @generated-sources.txt -d compiled -sourcepath "target/sources/gson-2.3.1-sources.jar:target/sources/junit-4.12-sources.jar:target/sources/hamcrest-core-1.3-sources.jar:target/sources/dagger-2.0-sources.jar:target/sources/javax.inject-1-sources.jar" -classpath "target/sources/dagger-compiler-2.0-sources.jar:target/sources/dagger-producers-2.0-beta-sources.jar"
+
+
+# NOTE classpath MIGHT not be required, since dagger generates all dependecy providers when building with maven.
+
+javac @sources.txt @generated-sources.txt -d compiled -sourcepath "target/sources/gson-2.3.1-sources.jar:target/sources/junit-4.12-sources.jar:target/sources/hamcrest-core-1.3-sources.jar:target/sources/dagger-2.0-sources.jar:target/sources/javax.inject-1-sources.jar" 
+
+
+
+Run Unit tests from command line
+PATH prerequisites 
+
+Calins-MacBook-Pro:bll calin$ echo "${PATH//:/$'\n'}"
+/usr/local/bin
+/usr/bin
+/bin
+/usr/sbin
+/sbin
+/Users/calin/Documents/CalinSourceCode/cross-platform-poc/bll/compiled
+					MOST IMPORTANT———————^
+
+Running unit tests from command line:
+
+Calins-MacBook-Pro:bll calin$ java -cp "$PATH:junit-4.12.jar" org.junit.runner.JUnitCore org.shiftedapps.helloworld.bll.MessagesIntegrationTest
+JUnit version 4.12
+..
+Time: 0.279
+
+OK (2 tests)
+
